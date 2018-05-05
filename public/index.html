@@ -49,21 +49,23 @@
     <body>
         <header>
             <h1 style="margin: 0 auto; width: 400px; margin-top: 20px;">
-                Cadastro Veiculos
+                Lançamentos
             </h1>
         </header>
         <div id="app" style="width: 100%">
             <div id="appCadastro">
                 <div class="card" style="width: 80%; margin: 0 auto; margin-top: 100px;">
                     <div class="card-body">
-                        <h5 class="card-title">Cadastro</h5>
+                        <h5 class="card-title">Novo Lnaçamento</h5>
                         <div class="form-group">
-                            <label for="inptPlaca">Placa</label>
-                            <input type="text" maxlength="7" class="form-control" id="inptPlaca" placeholder="Digite a Placa">
+                            <label for="selectCor">Categoria</label>
+                            <select class="form-control" id="selectCategoria">
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="inptAno">Ano Modelo</label>
-                            <input type="number" min="1950" max="3000" class="form-control" id="inptAno" placeholder="Digite o ano">
+                            <label for="selectCor">Tipo Lançamento</label>
+                            <select class="form-control" id="selectTipoLancamento">
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="inptDataAtualizado">Atualizado em</label>
@@ -94,18 +96,19 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">placa</th>
-                                <th scope="col">anoModelo</th>
-                                <th scope="col">atualizadoEm</th>
-                                <th scope="col">idCor</th>
-                                <th scope="col">anoFabricacao</th>
-                                <th scope="col">ativo</th>
+                                <th scope="col">Categoria</th>
+                                <th scope="col">Tipo de Lançamento</th>
+                                <th scope="col">Prazo</th>
+                                <th scope="col">Valor</th>
+                                <th scope="col">Taxa</th>
+                                <th scope="col">Data do Lançamento</th>
+                                <th scope="col">Data do Cancelamento</th>
                                 <th scope="col">#</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
-                    <button class="btn btn-primary" onclick="exibirTelaCadastro()" style="width: 200px">Novo Veiculo</button>
+                    <button class="btn btn-primary" onclick="exibirTelaCadastro()" style="width: 200px">Novo Lançamento</button>
                 </div>
             </div>
         </div>
