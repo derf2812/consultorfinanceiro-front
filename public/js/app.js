@@ -1,47 +1,53 @@
-const URL_BASE = "http://fiscal-data.herokuapp.com/api"
+const URL_BASE = "http://localhost:8080/api"
 
-const cores = []
+const categorias = []
 
 $(()=>{
     showLoading()
 
-    $.get(`${URL_BASE}/cor`, function(obj){
-        var selectorCor = $('#selectCor');
-        obj.data.forEach(cor=>{
-            cores.push(cor)
-            selectorCor.append(`<option value='${cor.id}'>${cor.descricao}</option>`)
+    $.get(`${URL_BASE}/categoria`, function(obj){
+        var selectCategoria = $('#selectCategoria');
+        obj.forEach(categoria=>{
+            selectCategoria.append(`<option value='${categoria.categoriaId}'>${categoria.tipoLancamentoCategoria}</option>`)
         })
     })
 
-    carregarListaDeVeiculos().then(()=>{
+    carregarListaDeLancamentos().then(()=>{
+        hideLoading()
+    }).catch(()=>{
         hideLoading()
     })
 })
 
-function carregarListaDeVeiculos(){
+function carregarListaDeLancamentos(){
     return new Promise((resolve, reject)=>{
-        $.get(`${URL_BASE}/veiculo`, function(obj){
-            var veiculos = obj.data
-
-            var tbody = $('#appLista table tbody');
-            tbody.remove()
-            $('#appLista table').append('<tbody />');
-            tbody = $('#appLista table tbody');
-            
-            veiculos.forEach(veiculo => {
-                tbody.append(`<tr>
-                    <td>${veiculo.placa}</td>
-                    <td>${veiculo.anoModelo}</td>
-                    <td>${veiculo.atualizadoEm}</td>
-                    <td>${getCor(parseInt(veiculo.idCor))}</td>
-                    <td>${veiculo.anoFabricacao}</td>
-                    <td>${veiculo.ativo}</td>
-                    <td><button class="btn btn-default" onclick='deletarVeiculo("${veiculo.placa}")'><i class="material-icons">delete</i></button></td>
-                </tr>`)    
-            });
-
-            resolve()
-        })
+        try{
+            $.get(`${URL_BASE}/lancamento`, function(obj){
+                var lancamentos = obj.data
+    
+                var tbody = $('#appLista table tbody');
+                tbody.remove()
+                $('#appLista table').append('<tbody />');
+                tbody = $('#appLista table tbody');
+                
+                lamcamentos.forEach(lancamento => {
+                    tbody.append(`<tr>
+                        <td>${lancamento.placa}</td>
+                        <td>${lancamento.anoModelo}</td>
+                        <td>${lancamento.atualizadoEm}</td>
+                        <td>${lancamento.anoFabricacao}</td>
+                        <td>${lancamento.ativo}</td>
+                        <td><button class="btn btn-default" onclick='deletarVeiculo("${lancamento.placa}")'><i class="material-icons">delete</i></button></td>
+                    </tr>`)    
+                });
+    
+                resolve()
+            }, function(e){
+                reject(e)
+            })
+        }catch(e){
+            reject(e)
+        }
     })
 }
 
