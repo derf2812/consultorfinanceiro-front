@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        
+        <title>Home</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/icon.css">
+
+        <style>
+            .loader {
+                border: 16px solid #f3f3f3;
+                border-radius: 50%;
+                border-top: 16px solid #3498db;
+                width: 120px;
+                height: 120px;
+                -webkit-animation: spin 2s linear infinite; /* Safari */
+                animation: spin 2s linear infinite;
+            }
+            
+            /* Safari */
+            @-webkit-keyframes spin {
+                0% { -webkit-transform: rotate(0deg); }
+                100% { -webkit-transform: rotate(360deg); }
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            .centered {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            #loading{
+                display: none;
+            }
+
+            #appCadastro{
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1 style="margin: 0 auto; width: 400px; margin-top: 20px;">
+                Cadastro Veiculos
+            </h1>
+        </header>
+        <div id="app" style="width: 100%">
+            <div id="appCadastro">
+                <div class="card" style="width: 80%; margin: 0 auto; margin-top: 100px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Cadastro</h5>
+                        <div class="form-group">
+                            <label for="inptPlaca">Placa</label>
+                            <input type="text" maxlength="7" class="form-control" id="inptPlaca" placeholder="Digite a Placa">
+                        </div>
+                        <div class="form-group">
+                            <label for="inptAno">Ano Modelo</label>
+                            <input type="number" min="1950" max="3000" class="form-control" id="inptAno" placeholder="Digite o ano">
+                        </div>
+                        <div class="form-group">
+                            <label for="inptDataAtualizado">Atualizado em</label>
+                            <input type="date" class="form-control" id="inptDataAtualizado" placeholder="Data">
+                        </div>
+                        <div class="form-group">
+                            <label for="selectCor">Cor</label>
+                            <select class="form-control" id="selectCor">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inptAnoFabricacao">Ano Fabricação</label>
+                            <input type="number" min="1950" max="3000" class="form-control" id="inptAnoFabricacao" placeholder="Digite o ano de fabricacao">
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="checkAtivo">
+                            <label class="form-check-label" for="checkAtivo">
+                                Ativo
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="cadastrar()">Cadastrar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="appLista">
+                <div class="card" style="width: 80%; margin: 0 auto; margin-top: 100px;">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">placa</th>
+                                <th scope="col">anoModelo</th>
+                                <th scope="col">atualizadoEm</th>
+                                <th scope="col">idCor</th>
+                                <th scope="col">anoFabricacao</th>
+                                <th scope="col">ativo</th>
+                                <th scope="col">#</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button class="btn btn-primary" onclick="exibirTelaCadastro()" style="width: 200px">Novo Veiculo</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="loading">
+            <div style="background-color: black; opacity: 0.4; position: fixed; top: 0; left: 0; width: 100%; height: 100%;">
+            
+            </div>
+            <div class="loader centered"></div>
+        </div>
+
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.min.js" ></script>
+        <script src="js/moment.js" ></script>
+        <script src="js/app.js" ></script>
+    </body>
+</html>
