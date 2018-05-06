@@ -5,6 +5,9 @@ const categorias = []
 $(()=>{
     showLoading()
 
+    $('#btCadastrar').click(cadastrar)
+    $('#btVoltar').click(exibirTelaLista)
+
     $.get(`${URL_BASE}/categoria`, function(obj){
         var selectCategoria = $('#selectCategoria');
         obj.forEach(categoria=>{
@@ -12,9 +15,17 @@ $(()=>{
         })
     })
 
+    $.get(`${URL_BASE}/tipolancamento`, function(obj){
+        var selectTipoLancamento = $('#selectTipoLancamento');
+        obj.forEach(tipoLancamento=>{
+            selectTipoLancamento.append(`<option value='${tipoLancamento.idTipoLancamento}'>${tipoLancamento.descricaoLancamento}</option>`)
+        })
+    })
+
     carregarListaDeLancamentos().then(()=>{
         hideLoading()
-    }).catch(()=>{
+    }).catch((e)=>{
+        alert(e)
         hideLoading()
     })
 })
@@ -22,28 +33,26 @@ $(()=>{
 function carregarListaDeLancamentos(){
     return new Promise((resolve, reject)=>{
         try{
-            $.get(`${URL_BASE}/lancamento`, function(obj){
-                var lancamentos = obj.data
-    
+            $.get(`${URL_BASE}/lancamento`, function(lancamentos){
                 var tbody = $('#appLista table tbody');
                 tbody.remove()
                 $('#appLista table').append('<tbody />');
                 tbody = $('#appLista table tbody');
                 
-                lamcamentos.forEach(lancamento => {
+                lancamentos.forEach(lancamento => {
                     tbody.append(`<tr>
-                        <td>${lancamento.placa}</td>
-                        <td>${lancamento.anoModelo}</td>
-                        <td>${lancamento.atualizadoEm}</td>
-                        <td>${lancamento.anoFabricacao}</td>
-                        <td>${lancamento.ativo}</td>
-                        <td><button class="btn btn-default" onclick='deletarVeiculo("${lancamento.placa}")'><i class="material-icons">delete</i></button></td>
+                        <td>${lancamento.categoria.tipoLancamentoCategoria}</td>
+                        <td>${lancamento.tipolancamento.descricaoLancamento}</td>
+                        <td>${lancamento.prazo}</td>
+                        <td>${lancamento.valorLancamento}</td>
+                        <td>${lancamento.taxa}</td>
+                        <td>${formatarData(lancamento.dataLancamento)}</td>
+                        <td>${formatarData(lancamento.dataCancelamento)}</td>
+                        <td><button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button></td>
                     </tr>`)    
                 });
     
                 resolve()
-            }, function(e){
-                reject(e)
             })
         }catch(e){
             reject(e)
@@ -55,20 +64,19 @@ function cadastrar(){
     showLoading()
 
     var objCadastro = {
-        placa: $('#inptPlaca').val(),
-        anoModelo: $('#inptAno').val(),
-        atualizadoEm: formatarData($('#inptDataAtualizado').val()),
-        idCor: $('#selectCor option:selected').val(),
-        anoFabricacao: $('#inptAnoFabricacao').val(),
-        ativo: $('#checkAtivo').is(':checked')
+        categoria: {categoriaId: $('#selectCategoria option:selected').val()},
+        tipolancamento: {idTipoLancamento: $('#selectTipoLancamento option:selected').val()},
+        prazo: $('#inptPrazo').val(),
+        valorLancamento: $('#inptValor').val(),
+        dataLancamento: formatarData($('#inptDataLancamento').val())
     }
 
     $.ajax({
-        url: `${URL_BASE}/veiculo`,
+        url: `${URL_BASE}/lancamento`,
         type: 'post',
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
-            carregarListaDeVeiculos().then(()=>{
+            carregarListaDeLancamentos().then(()=>{
                 exibirTelaLista()
                 hideLoading()
             })
@@ -82,7 +90,7 @@ function cadastrar(){
     });
 }
 
-function deletarVeiculo(placa){
+function deletarLancamento(idLancamento){
     showLoading()
 
     $.ajax({
@@ -90,7 +98,7 @@ function deletarVeiculo(placa){
         type: 'delete',
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
-            carregarListaDeVeiculos().then(()=>{
+            carregarListaDeLancamentos().then(()=>{
                 exibirTelaLista()
                 hideLoading()
             })
