@@ -3,10 +3,10 @@ const URL_BASE = "http://localhost:8080/api"
 const categorias = []
 
 $(()=>{
-    showLoading()
-
     $('#btCadastrar').click(cadastrar)
     $('#btVoltar').click(exibirTelaLista)
+
+    exibirTelaHome()
 
     $.get(`${URL_BASE}/categoria`, function(obj){
         var selectCategoria = $('#selectCategoria');
@@ -20,13 +20,6 @@ $(()=>{
         obj.forEach(tipoLancamento=>{
             selectTipoLancamento.append(`<option value='${tipoLancamento.idTipoLancamento}'>${tipoLancamento.descricaoLancamento}</option>`)
         })
-    })
-
-    carregarListaDeLancamentos().then(()=>{
-        hideLoading()
-    }).catch((e)=>{
-        alert(e)
-        hideLoading()
     })
 })
 
@@ -135,11 +128,40 @@ function hideLoading(){
 }
 
 function exibirTelaCadastro(){
-    $('#appLista').hide()
+    hideAllAppContainer()
     $('#appCadastro').show()
 }
 
 function exibirTelaLista(){
+    hideAllAppContainer()
     $('#appLista').show()
-    $('#appCadastro').hide()
+
+    showLoading()
+
+    carregarListaDeLancamentos().then(()=>{
+        hideLoading()
+    }).catch((e)=>{
+        alert(e)
+        hideLoading()
+    })
+}
+
+function exibirTelaHome(){
+    hideAllAppContainer()
+    $('#appHome').show()
+}
+
+function hideAllAppContainer(){
+    $('.appContainer').hide()
+}
+
+function goTo(location){
+    switch(location){
+        case 'HOME': 
+            exibirTelaHome()
+        break
+        case 'LANCAMENTOS': 
+            exibirTelaLista()
+        break
+    }
 }
