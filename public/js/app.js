@@ -8,6 +8,10 @@ $(()=>{
 
     exibirTelaHome()
 
+    $.get(`${URL_BASE}/conta/12`, function(obj){
+        $('#valorSaldoAtual').text(formataToDinheiro(obj.saldo))
+    })
+
     $.get(`${URL_BASE}/categoria`, function(obj){
         var selectCategoria = $('#selectCategoria');
         obj.forEach(categoria=>{
@@ -59,6 +63,7 @@ function cadastrar(){
     var objCadastro = {
         categoria: {categoriaId: $('#selectCategoria option:selected').val()},
         tipolancamento: {idTipoLancamento: $('#selectTipoLancamento option:selected').val()},
+        conta: {contaId: 12},
         prazo: $('#inptPrazo').val(),
         valorLancamento: $('#inptValor').val(),
         dataLancamento: formatarData($('#inptDataLancamento').val())
@@ -70,7 +75,6 @@ function cadastrar(){
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
             carregarListaDeLancamentos().then(()=>{
-                exibirTelaLista()
                 hideLoading()
             })
         },
@@ -87,7 +91,7 @@ function deletarLancamento(idLancamento){
     showLoading()
 
     $.ajax({
-        url: `${URL_BASE}/veiculo/${placa}`,
+        url: `${URL_BASE}/lancamento/${idLancamento}`,
         type: 'delete',
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
@@ -97,7 +101,7 @@ function deletarLancamento(idLancamento){
             })
         },
         error: function (request, status, error) {
-            alert('ERRO ao tentar remover veiculo: '+request.responseJSON.msg)
+            alert('ERRO ao tentar apagar o lancamento: '+error)
             hideLoading()
         },
         data: "",
@@ -164,4 +168,8 @@ function goTo(location){
             exibirTelaLista()
         break
     }
+}
+
+function formataToDinheiro(valor){
+    return `R$ ${valor}`
 }
