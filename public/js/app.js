@@ -5,12 +5,11 @@ const categorias = []
 $(()=>{
     $('#btCadastrar').click(cadastrar)
     $('#btVoltar').click(exibirTelaLista)
+    $('#btnZerarSaldo').click(()=>{
+        zerarSaldo(12)
+    })
 
     exibirTelaHome()
-
-    $.get(`${URL_BASE}/conta/12`, function(obj){
-        $('#valorSaldoAtual').text(formataToDinheiro(obj.saldo))
-    })
 
     $.get(`${URL_BASE}/categoria`, function(obj){
         var selectCategoria = $('#selectCategoria');
@@ -74,9 +73,7 @@ function cadastrar(){
         type: 'post',
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
-            carregarListaDeLancamentos().then(()=>{
-                hideLoading()
-            })
+            exibirTelaLista();
         },
         error: function (request, status, error) {
             alert('ERRO ao Efetuar cadastro: '+request.responseJSON.msg)
@@ -109,6 +106,25 @@ function deletarLancamento(idLancamento){
     });
 }
 
+function zerarSaldo(idConta){
+    showLoading()
+
+    $.ajax({
+        url: `${URL_BASE}/conta/zerarsaldo/${idConta}`,
+        type: 'post',
+        contentType: "application/json; charset=utf-8",
+        success: function( data ) {
+            exibirTelaMinhaConta()
+            hideLoading()
+        },
+        error: function (request, status, error) {
+            alert( 'ERRO ao tentar zerar o saldo: ' + error )
+            hideLoading()
+        },
+        data: "",
+        processData: false
+    });
+}
 function getCor(id){
     for (const key in cores) {
         if (cores[key].id === id) {
@@ -153,6 +169,15 @@ function exibirTelaLista(){
 function exibirTelaHome(){
     hideAllAppContainer()
     $('#appHome').show()
+
+    $.get(`${URL_BASE}/conta/12`, function(obj){
+        $('#valorSaldoAtual').text(formataToDinheiro(obj.saldo))
+    })
+}
+
+function exibirTelaMinhaConta(){
+    hideAllAppContainer()
+    $('#appMinhaConta').show()
 }
 
 function hideAllAppContainer(){
@@ -166,6 +191,9 @@ function goTo(location){
         break
         case 'LANCAMENTOS': 
             exibirTelaLista()
+        break
+        case 'MINHA_CONTA': 
+            exibirTelaMinhaConta()
         break
     }
 }
