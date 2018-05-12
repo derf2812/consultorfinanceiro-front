@@ -1,5 +1,5 @@
 var static = require( 'node-static' ),
-    port = 8081,
+    port = process.env.PORT || 8081,
     http = require( 'http' );
 
 // config
