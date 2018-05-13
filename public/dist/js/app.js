@@ -1,4 +1,5 @@
-const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+const URL_BASE = "http://localhost:8080/api"
 
 const categorias = []
 
@@ -172,8 +173,10 @@ function exibirTelaHome(){
     hideAllAppContainer()
     $('#appHome').show()
 
-    $.get(`${URL_BASE}/conta/12`, function(obj){
-        $('#valorSaldoAtual').text(formataToDinheiro(obj.saldo))
+    $.get(`${URL_BASE}/conta/12`, function(conta){
+        $('#valorSaldoAtual').text(formataToDinheiro(conta.saldo))
+        $('#valorSaldoReceita').text(formataToDinheiro(conta.saldoReceita))
+        $('#valorSaldoDespesa').text(formataToDinheiro(conta.saldoDespesa))
     })
 }
 
