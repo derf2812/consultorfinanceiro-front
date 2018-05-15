@@ -14,7 +14,6 @@ $(()=>{
             type: 'post',
             contentType: "application/json; charset=utf-8",
             success: function( retorno ) {
-                alert(JSON.stringify(retorno.data))
                 localStorage.setItem("usuarioLogado", JSON.stringify(retorno.data))
                 window.location = "/index.html"
             },
