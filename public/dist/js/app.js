@@ -187,6 +187,7 @@ function exibirTelaHome(){
         $('#valorSaldoAtual').text(formataToDinheiro(conta.saldo))
         $('#valorSaldoReceita').text(formataToDinheiro(conta.saldoReceita))
         $('#valorSaldoDespesa').text(formataToDinheiro(conta.saldoDespesa))
+        $('#valorPercentualSaldo').text(formataToDinheiro((conta.saldoDespesa*100)/conta.saldoReceita))
     })
 }
 
