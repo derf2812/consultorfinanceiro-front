@@ -1,13 +1,23 @@
 //const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
-const URL_BASE = "http://192.168.0.12:8080/api"
+//const URL_BASE = "http://192.168.0.12:8080/api"
+const URL_BASE = "http://localhost:8080/api"
 
 const categorias = []
 
 $(()=>{
+    $('#btnSair').click(()=>{
+        localStorage.removeItem("usuarioLogado");
+        window.location = "/login.html";
+    })
+
+    $('.nomeUsuario').toArray().forEach((it)=>{
+        $(it).text(getNomeUsuariLogado())
+    })
+
     $('#btCadastrar').click(cadastrar)
     $('#btVoltar').click(exibirTelaLista)
     $('#btnZerarSaldo').click(()=>{
-        zerarSaldo(12)
+        zerarSaldo(getIdUsuariLogado())
     })
 
     exibirTelaHome()
@@ -30,7 +40,7 @@ $(()=>{
 function carregarListaDeLancamentos(){
     return new Promise((resolve, reject)=>{
         try{
-            $.get(`${URL_BASE}/lancamento`, function(lancamentos){
+            $.get(`${URL_BASE}/lancamento/conta/${getIdUsuariLogado()}`, function(lancamentos){
                 var tbody = $('#appLista table tbody');
                 tbody.remove()
                 $('#appLista table').append('<tbody />');
@@ -46,7 +56,7 @@ function carregarListaDeLancamentos(){
                         <td>${formatarData(lancamento.dataLancamento)}</td>
                         <td>${formatarData(lancamento.dataCancelamento)}</td>
                         <td><button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button></td>
-                    </tr>`)    
+                    </tr>`)
                 });
     
                 resolve()
@@ -63,7 +73,7 @@ function cadastrar(){
     var objCadastro = {
         categoria: {categoriaId: $('#selectCategoria option:selected').val()},
         tipolancamento: {idTipoLancamento: $('#selectTipoLancamento option:selected').val()},
-        conta: {contaId: 12},
+        conta: {contaId: getIdUsuariLogado()},
         prazo: $('#inptPrazo').val(),
         valorLancamento: $('#inptValor').val(),
         dataLancamento: formatarData($('#inptDataLancamento').val())
@@ -173,7 +183,7 @@ function exibirTelaHome(){
     hideAllAppContainer()
     $('#appHome').show()
 
-    $.get(`${URL_BASE}/conta/12`, function(conta){
+    $.get(`${URL_BASE}/conta/${getIdUsuariLogado()}`, function(conta){
         $('#valorSaldoAtual').text(formataToDinheiro(conta.saldo))
         $('#valorSaldoReceita').text(formataToDinheiro(conta.saldoReceita))
         $('#valorSaldoDespesa').text(formataToDinheiro(conta.saldoDespesa))
@@ -210,4 +220,12 @@ function goTo(location){
 
 function formataToDinheiro(valor){
     return `R$ ${valor}`
+}
+
+function getIdUsuariLogado(){
+    return JSON.parse(localStorage.getItem("usuarioLogado")).contaId
+}
+
+function getNomeUsuariLogado(){
+    return JSON.parse(localStorage.getItem("usuarioLogado")).nomeUsuario
 }
