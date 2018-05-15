@@ -219,7 +219,7 @@ function goTo(location){
 }
 
 function formataToDinheiro(valor){
-    return `R$ ${valor}`
+    return `${parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`
 }
 
 function getIdUsuariLogado(){
