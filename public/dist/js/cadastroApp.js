@@ -1,5 +1,5 @@
-const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
-//const URL_BASE = "http://192.168.0.12:8080/api"
+//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+const URL_BASE = "http://192.168.43.160:8080/api"
 //const URL_BASE = "http://localhost:8080/api"
 
 $(()=>{
@@ -18,7 +18,7 @@ $(()=>{
             type: 'post',
             contentType: "application/json; charset=utf-8",
             success: function( retorno ) {
-                localStorage.setItem("usuarioLogado", retorno.data)
+                localStorage.setItem("usuarioLogado", JSON.stringify(retorno.data))
                 window.location = "/index.html"
             },
             error: function (request, status, error) {

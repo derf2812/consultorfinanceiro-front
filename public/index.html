@@ -226,7 +226,7 @@
 
         <!-- TELA LISTA -->
         <div id="appLista" class="appContainer">
-          <table class="table">
+          <table class="table hidden-xs">
             <thead>
               <tr>
                 <th scope="col">Categoria</th>
@@ -241,6 +241,15 @@
             </thead>
             <tbody></tbody>
           </table>
+
+          <div id="lista-mobile" class="hidden-sm hidden-md hidden-lg">
+            <div class="panel panel-info">
+              <div class="panel-heading">Isso é um titulo de card</div>
+              <div class="panel-body">
+                aqui vem o conteudo
+              </div>
+            </div>
+          </div>
           <button class="btn btn-primary" onclick="exibirTelaCadastro()" style="width: 200px">Novo Lançamento</button>
         </div>
         <!-- /. TELA LISTA -->
@@ -256,10 +265,10 @@
             </div>
             <div class="form-group">
               <label for="selectCor">Tipo Lançamento</label>
-              <select class="form-control" id="selectTipoLancamento">
+              <select class="form-control" id="selectTipoLancamento" onchange="atualizaTelaNovoLancamento()">
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="display: none;">
               <label for="inptPrazo">Prazo</label>
               <input type="number" min="1" max="12" class="form-control" id="inptPrazo" placeholder="Digite o prazo">
             </div>
@@ -282,6 +291,11 @@
 
         <!-- MINHA CONTA -->
         <div id="appMinhaConta" class="appContainer">
+          Nome: <span id="usr-nome"></span><br />
+          Login: <span id="usr-login"></span><br />
+          Data de Cadastro: <span id="usr-data-cadastro"></span><br />
+          Email: <span id="usr-email"></span><br /><br />
+
           <button id="btnZerarSaldo" class="btn btn-primary">Zerar Saldo</button>
         </div>
         <!-- /. MINHA CONTA -->

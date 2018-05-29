@@ -1,5 +1,5 @@
-const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
-//const URL_BASE = "http://192.168.0.12:8080/api"
+//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+const URL_BASE = "http://192.168.43.160:8080/api"
 //const URL_BASE = "http://localhost:8080/api"
 
 const categorias = []
@@ -37,6 +37,16 @@ $(()=>{
     })
 })
 
+function atualizaTelaNovoLancamento(){
+    var str = $('#selectTipoLancamento option:selected').text()
+    var patt = new RegExp("Prazo", "i")
+    if(patt.test(str)){
+        $('#inptPrazo').parent().show()
+    }else{
+        $('#inptPrazo').parent().hide()
+    }
+}
+
 function carregarListaDeLancamentos(){
     return new Promise((resolve, reject)=>{
         try{
@@ -45,20 +55,33 @@ function carregarListaDeLancamentos(){
                 tbody.remove()
                 $('#appLista table').append('<tbody />');
                 tbody = $('#appLista table tbody');
+                var listaMobile = $('#lista-mobile')
+                listaMobile.html('')
                 
                 lancamentos.forEach(lancamento => {
                     tbody.append(`<tr>
                         <td>${lancamento.categoria.tipoLancamentoCategoria}</td>
                         <td>${lancamento.tipolancamento.descricaoLancamento}</td>
                         <td>${lancamento.prazo}</td>
-                        <td>${lancamento.valorLancamento}</td>
+                        <td>${formataToDinheiro(lancamento.valorLancamento)}</td>
                         <td>${lancamento.taxa}</td>
                         <td>${formatarData(lancamento.dataLancamento)}</td>
                         <td>${formatarData(lancamento.dataCancelamento)}</td>
                         <td><button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button></td>
                     </tr>`)
+
+                    listaMobile.append(`
+                        <div class="panel panel-info">
+                            <div class="panel-heading">${lancamento.tipolancamento.descricaoLancamento}</div>
+                            <div class="panel-body">
+                                ${lancamento.categoria.tipoLancamentoCategoria} - ${formataToDinheiro(lancamento.valorLancamento)}<br />
+                                ${formatarData(lancamento.dataLancamento)} 
+                                <button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button>
+                            </div>
+                        </div>
+                    `)
                 });
-    
+
                 resolve()
             })
         }catch(e){
@@ -158,7 +181,15 @@ function hideLoading(){
     $('#loading').hide()
 }
 
-function exibirTelaCadastro(){
+function exibirTelaCadastro(limpaTela=true){
+    if(limpaTela){
+        $('#selectCategoria').val('')
+        $('#selectTipoLancamento').val('')
+        $('#inptPrazo').val('')
+        $('#inptValor').val('')
+        $('#inptDataLancamento').val('')
+    }
+    
     hideAllAppContainer()
     $('#appCadastro').show()
 }
@@ -193,6 +224,12 @@ function exibirTelaHome(){
 
 function exibirTelaMinhaConta(){
     trocarTituloTelaAtual('Minha Conta')
+
+    $("#usr-nome").text(getUsuariLogado().nomeUsuario)
+    $("#usr-login").text(getIdUsuariLogado().login)
+    $("#usr-data-cadastro").text(getIdUsuariLogado().dataCadastro)
+    $("#usr-email").text(getIdUsuariLogado().email)
+
     hideAllAppContainer()
     $('#appMinhaConta').show()
 }
@@ -229,4 +266,8 @@ function getIdUsuariLogado(){
 
 function getNomeUsuariLogado(){
     return JSON.parse(localStorage.getItem("usuarioLogado")).nomeUsuario
+}
+
+function getUsuariLogado(){
+    return JSON.parse(localStorage.getItem("usuarioLogado"))
 }
