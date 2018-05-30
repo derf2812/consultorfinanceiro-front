@@ -195,7 +195,7 @@ function exibirTelaCadastro(limpaTela=true){
 }
 
 function exibirTelaLista(){
-    trocarTituloTelaAtual('Lista Lancamentos')
+    trocarTituloTelaAtual('Lista Lançamentos')
     hideAllAppContainer()
     $('#appLista').show()
 
@@ -218,7 +218,8 @@ function exibirTelaHome(){
         $('#valorSaldoAtual').text(formataToDinheiro(conta.saldo))
         $('#valorSaldoReceita').text(formataToDinheiro(conta.saldoReceita))
         $('#valorSaldoDespesa').text(formataToDinheiro(conta.saldoDespesa))
-        $('#valorPercentualSaldo').text(((conta.saldoDespesa*100)/conta.saldoReceita)+'%')
+        $('#valorPercentualSaldo').text(Math.round(((conta.saldoDespesa*100)/conta.saldoReceita))+'%')
+        Math.round()
     })
 }
 
