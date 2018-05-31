@@ -58,25 +58,34 @@ function carregarListaDeLancamentos(){
                 var listaMobile = $('#lista-mobile')
                 listaMobile.html('')
                 
+                var patt = new RegExp("Receita", "i")
+
                 lancamentos.forEach(lancamento => {
                     tbody.append(`<tr>
                         <td>${lancamento.categoria.tipoLancamentoCategoria}</td>
                         <td>${lancamento.tipolancamento.descricaoLancamento}</td>
                         <td>${lancamento.prazo}</td>
                         <td>${formataToDinheiro(lancamento.valorLancamento)}</td>
-                        <td>${lancamento.taxa}</td>
                         <td>${formatarData(lancamento.dataLancamento)}</td>
                         <td>${formatarData(lancamento.dataCancelamento)}</td>
-                        <td><button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button></td>
-                    </tr>`)
+                        <td><button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="fa fa-trash"></i></button></td>
+                        </tr>`)
+                        
+                    var cor;
+
+                    if(patt.test(lancamento.tipolancamento.descricaoLancamento)){
+                        cor = 'success'
+                    }else{
+                        cor = 'danger'
+                    }
 
                     listaMobile.append(`
-                        <div class="panel panel-info">
+                        <div class="panel panel-${cor}">
                             <div class="panel-heading">${lancamento.tipolancamento.descricaoLancamento}</div>
                             <div class="panel-body">
                                 ${lancamento.categoria.tipoLancamentoCategoria} - ${formataToDinheiro(lancamento.valorLancamento)}<br />
                                 ${formatarData(lancamento.dataLancamento)} 
-                                <button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="material-icons">delete</i></button>
+                                <button class="btn btn-default" onclick='deletarLancamento("${lancamento.lancamentoId}")'><i class="fa fa-trash"></i></button>
                             </div>
                         </div>
                     `)
