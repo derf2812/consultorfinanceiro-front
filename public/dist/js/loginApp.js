@@ -1,6 +1,6 @@
-const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
 //const URL_BASE = "http://192.168.43.160:8080/api"
-//const URL_BASE = "http://localhost:8080/api"
+const URL_BASE = "http://localhost:8080/api"
 
 $(()=>{
     $('#btnLogar').click(()=>{

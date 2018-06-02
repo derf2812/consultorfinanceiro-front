@@ -1,6 +1,6 @@
-const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
 //const URL_BASE = "http://192.168.43.160:8080/api"
-//const URL_BASE = "http://localhost:8080/api"
+const URL_BASE = "http://localhost:8080/api"
 
 const categorias = []
 
@@ -228,20 +228,23 @@ function exibirTelaHome(){
         $('#valorSaldoReceita').text(formataToDinheiro(conta.saldoReceita))
         $('#valorSaldoDespesa').text(formataToDinheiro(conta.saldoDespesa))
         $('#valorPercentualSaldo').text(Math.round(((conta.saldoDespesa*100)/conta.saldoReceita))+'%')
-        Math.round()
     })
 }
 
 function exibirTelaMinhaConta(){
-    trocarTituloTelaAtual('Minha Conta')
+    $.get(`${URL_BASE}/conta/${getIdUsuariLogado()}`, function(conta){
+        trocarTituloTelaAtual('Minha Conta')
 
-    $("#usr-nome").text(getUsuariLogado().nomeUsuario)
-    $("#usr-login").text(getIdUsuariLogado().login)
-    $("#usr-data-cadastro").text(getIdUsuariLogado().dataCadastro)
-    $("#usr-email").text(getIdUsuariLogado().email)
+        $("#usr-nome").text(conta.nomeUsuario)
+        $("#usr-login").text(conta.login)
+        $("#usr-data-cadastro").text(conta.dataCadastro)
+        $("#usr-email").text(conta.email)
+        $("#usr-limite-gasto-mensal").text(conta.limiteGastoMensal)
 
-    hideAllAppContainer()
-    $('#appMinhaConta').show()
+        hideAllAppContainer()
+        $('#appMinhaConta').show()
+    })
+   
 }
 
 function hideAllAppContainer(){
