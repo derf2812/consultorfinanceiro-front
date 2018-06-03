@@ -1,6 +1,6 @@
-//const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
+const URL_BASE = "https://consultorfinanceiro-back.herokuapp.com/api"
 //const URL_BASE = "http://192.168.0.12:8080/api"
-const URL_BASE = "http://localhost:8080/api"
+//const URL_BASE = "http://localhost:8080/api"
 
 const categorias = []
 
@@ -111,12 +111,39 @@ function cadastrar(){
         dataLancamento: formatarData($('#inptDataLancamento').val())
     }
 
+    var fazerLancamento = function(){
+        $.ajax({
+            url: `${URL_BASE}/lancamento`,
+            type: 'post',
+            contentType: "application/json; charset=utf-8",
+            success: function( data ) {
+                exibirTelaLista();
+            },
+            error: function (request, status, error) {
+                alert('ERRO ao Efetuar cadastro: '+request.responseJSON.msg)
+                hideLoading()
+            },
+            data: JSON.stringify(objCadastro),
+            processData: false
+        });
+    }
+
     $.ajax({
-        url: `${URL_BASE}/lancamento`,
+        url: `${URL_BASE}/lancamento/validar-percentual-futuro`,
         type: 'post',
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
-            exibirTelaLista();
+            if(data.passou){
+                if(confirm("Se este lancamento for efetuado, você irá passar do limite mensal! DESEJA PROSEGUIR???")){
+                    fazerLancamento()
+                }
+                else{
+                    hideLoading()
+                }
+            }
+            else{
+                fazerLancamento()
+            }
         },
         error: function (request, status, error) {
             alert('ERRO ao Efetuar cadastro: '+request.responseJSON.msg)
