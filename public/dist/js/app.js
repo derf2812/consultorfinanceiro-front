@@ -134,7 +134,7 @@ function cadastrar(){
         contentType: "application/json; charset=utf-8",
         success: function( data ) {
             if(data.passou){
-                if(confirm("Se este lancamento for efetuado, você irá passar do limite mensal! DESEJA PROSEGUIR???")){
+                if(confirm("Assumir esta DESPESA irá comprometer mais de 70% de seu orçamento mensal! Deseja prosseguir?")){
                     fazerLancamento()
                 }
                 else{
